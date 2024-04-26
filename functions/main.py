@@ -2,7 +2,8 @@ from firebase_admin import initialize_app, firestore
 from firebase_functions import https_fn
 import flask
 import traceback
-from lib import ErrorResponse
+from lib import ErrorResponse, CloudSQLClient
+from tmp_keys import *
 
 # from local_scripts import reset_update_as_of
 
@@ -16,6 +17,7 @@ app = initialize_app()
 # Globals
 #################################
 
+sql = CloudSQLClient(SQL_PROJECT, SQL_REGION, SQL_INSTANCE, SQL_USER, SQL_PASS, SQL_DB)
 
 # ##############################
 # API
@@ -24,7 +26,7 @@ app = initialize_app()
 @https_fn.on_request()
 def fn_api(req: https_fn.Request) -> https_fn.Response:
 
-    db = firestore.client(app)
+    # db = firestore.client(app)
     api = flask.Flask(__name__)
 
     @api.errorhandler(Exception)
@@ -38,7 +40,7 @@ def fn_api(req: https_fn.Request) -> https_fn.Response:
 
     @api.post("/debug")
     def debug():
-        return 'success', 200
+        return sql.query("SELECT NOW()"), 200
 
     with api.request_context(req.environ):
         return api.full_dispatch_request()
