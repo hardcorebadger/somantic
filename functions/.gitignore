@@ -1,0 +1,12 @@
+# Custom
+local_scripts
+tmp_keys.py
+
+# Python
+# Byte-compiled / optimized Python files
+__pycache__/
+*.py[cod]
+
+# Virtual environment
+venv/
+env/
