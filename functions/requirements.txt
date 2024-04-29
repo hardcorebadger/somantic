@@ -2,3 +2,5 @@ firebase_functions~=0.2.0
 cloud-sql-python-connector
 sqlalchemy
 pg8000
+openai
+pgvector
